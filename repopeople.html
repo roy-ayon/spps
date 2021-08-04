@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Repopeople</title>
+    <style>
+        body {
+            font-size: 1.5rem;
+            margin: 3% 15%;
+        }
+        h1 {
+            font-size: 3rem;
+        }
+        .display { 
+            background-color: #EFEFEF;
+        }
+        img {
+            float: left;
+            margin: 10px 0;
+            padding-right: 7%;
+            padding-left: 10px;
+        }
+        ul {
+            padding: 40px 0 40px;
+            list-style-type: none;
+        }
+    </style>
+</head>
+<body>
+    <button id="load_github_users">Load Github Users</button>
+    <h1>Github Users</h1>
+    <section id="show"></section>
+    <script>
+        document.getElementById('load_github_users').addEventListener('click', load_user);
+        function load_user(){
+            var request = new XMLHttpRequest();
+            request.open('GET','https://api.github.com/users');
+            request.onload = function() {
+                if(request.status==200){
+                    var people = JSON.parse(request.responseText)
+                    var output= ' ';
+                    for(var i in people){
+                        output +=
+                        '<div class="display">' +
+                        '<img src="'+people[i].avatar_url+'"width="120px" height="114px">' +
+                        '<ul>' +
+                        '<li>ID: '+people[i].id+'</li>' +
+                        '<li>Login: '+people[i].login+'</li>' +
+                        '</ul>'+'</div>';
+                        }
+                    document.getElementById('show').innerHTML= output;
+                }
+            }
+            request.send();
+        }
+    </script>
+</body>
+</html>
